@@ -2,6 +2,7 @@
   "name": "securiti-visitas",
   "version": "1.0.0",
   "description": "SecuriTI - Sistema de gestión de visitas y control de acceso",
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
