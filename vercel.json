@@ -22,7 +22,5 @@
       "src": "/(.*)",
       "dest": "/frontend/dist/index.html"
     }
-  ],
-  "installCommand": "npm install && cd backend && npm install && cd ../frontend && npm install",
-  "buildCommand": "cd frontend && npm run build"
+  ]
 }
