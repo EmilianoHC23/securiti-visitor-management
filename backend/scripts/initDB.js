@@ -48,6 +48,27 @@ const initDatabase = async () => {
       console.log('✅ Usuario admin ya existe');
     }
 
+    // Crear usuario de seguridad por defecto
+    const securityExists = await User.findOne({ role: 'security' });
+    
+    if (!securityExists) {
+      const securityUser = new User({
+        email: 'security@securiti.com',
+        password: 'security123',
+        firstName: 'Personal',
+        lastName: 'de Seguridad',
+        role: 'security',
+        company: defaultCompany._id
+      });
+
+      await securityUser.save();
+      console.log('✅ Usuario security creado:');
+      console.log('   Email: security@securiti.com');
+      console.log('   Password: security123');
+    } else {
+      console.log('✅ Usuario security ya existe');
+    }
+
     // Crear usuario de recepción por defecto
     const receptionExists = await User.findOne({ role: 'reception' });
     
