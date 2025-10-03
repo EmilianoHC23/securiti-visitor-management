@@ -15,15 +15,15 @@ router.get('/', async (req, res) => {
     const filter = {};
 
     // Filtros basados en rol
-    if (req.user.role === 'employee') {
-      // Los empleados solo ven visitas donde son anfitriones
-      filter.hostEmployee = req.user._id;
+    if (req.user.role === 'host') {
+      // Los hosts solo ven visitas donde son anfitriones
+      filter.host = req.user._id;
     }
 
     // Aplicar filtros adicionales
     if (status) filter.status = status;
-    if (hostEmployee && (req.user.role === 'admin' || req.user.role === 'security')) {
-      filter.hostEmployee = hostEmployee;
+    if (hostEmployee && (req.user.role === 'admin' || req.user.role === 'security' || req.user.role === 'reception')) {
+      filter.host = hostEmployee;
     }
     if (date) {
       const startDate = new Date(date);
@@ -36,9 +36,9 @@ router.get('/', async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const visits = await Visit.find(filter)
-      .populate('hostEmployee', 'name email department')
-      .populate('createdBy', 'name email')
-      .populate('approvedBy', 'name email')
+      .populate('host', 'firstName lastName email role')
+      .populate('company', 'name location')
+      .populate('approvedBy', 'firstName lastName email')
       .sort({ scheduledDate: -1, createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit));
@@ -61,8 +61,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/visits - Crear nueva visita
-router.post('/', async (req, res) => {
+// POST /api/visits - Crear nueva visita (admin, security, reception pueden crear)
+router.post('/', authorizeRoles('admin', 'security', 'reception'), async (req, res) => {
   try {
     const {
       visitorName,
@@ -196,8 +196,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// PUT /api/visits/:id/approve - Aprobar visita (admin y security)
-router.put('/:id/approve', authorizeRoles('admin', 'security'), async (req, res) => {
+// PUT /api/visits/:id/approve - Aprobar visita (admin, security, reception)
+router.put('/:id/approve', authorizeRoles('admin', 'security', 'reception'), async (req, res) => {
   try {
     const visit = await Visit.findById(req.params.id);
 
@@ -226,8 +226,8 @@ router.put('/:id/approve', authorizeRoles('admin', 'security'), async (req, res)
   }
 });
 
-// PUT /api/visits/:id/reject - Rechazar visita (admin y security)
-router.put('/:id/reject', authorizeRoles('admin', 'security'), async (req, res) => {
+// PUT /api/visits/:id/reject - Rechazar visita (admin, security, reception)
+router.put('/:id/reject', authorizeRoles('admin', 'security', 'reception'), async (req, res) => {
   try {
     const { rejectedReason } = req.body;
 
