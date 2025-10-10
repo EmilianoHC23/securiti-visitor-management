@@ -7,6 +7,7 @@ const Sidebar = ({ isOpen, userRole }) => {
   const menuItems = {
     admin: [
       { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },
+      { path: '/appointments', icon: '📅', label: 'Citas' },
       { path: '/users', icon: '👥', label: 'Usuarios' },
       { path: '/companies', icon: '🏢', label: 'Empresas' },
       { path: '/visits', icon: '👤', label: 'Auto-registro' },
@@ -17,11 +18,13 @@ const Sidebar = ({ isOpen, userRole }) => {
     ],
     reception: [
       { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },
-      { path: '/accesses', icon: '�', label: 'Accesos/Eventos' },
-      { path: '/blacklist', icon: '�', label: 'Lista Negra' }
+      { path: '/appointments', icon: '📅', label: 'Citas' },
+      { path: '/accesses', icon: '', label: 'Accesos/Eventos' },
+      { path: '/blacklist', icon: '', label: 'Lista Negra' }
     ],
     host: [
       { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },
+      { path: '/appointments', icon: '📅', label: 'Citas' },
       { path: '/accesses', icon: '📅', label: 'Accesos/Eventos' }
     ]
   }

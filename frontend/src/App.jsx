@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './contexts/AuthContext'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import AppointmentsPage from './pages/AppointmentsPage'
+import NewAppointmentPage from './pages/NewAppointmentPage'
+import AppointmentDetailPage from './pages/AppointmentDetailPage'
 import Layout from './components/Layout/Layout'
 
 function App() {
@@ -18,20 +21,34 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route 
-          path="/login" 
-          element={!user ? <Login /> : <Navigate to="/dashboard" />} 
-        />
-        <Route 
-          path="/dashboard" 
-          element={user ? <Layout><Dashboard /></Layout> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/" 
-          element={<Navigate to={user ? "/dashboard" : "/login"} />} 
-        />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route 
+            path="/login" 
+            element={!user ? <Login /> : <Navigate to="/dashboard" />} 
+          />
+          <Route 
+            path="/dashboard" 
+            element={user ? <Dashboard /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/appointments"
+            element={user ? <AppointmentsPage /> : <Navigate to="/login" />}
+          />
+          <Route 
+            path="/appointments/new"
+            element={user ? <NewAppointmentPage /> : <Navigate to="/login" />}
+          />
+          <Route 
+            path="/appointments/:id"
+            element={user ? <AppointmentDetailPage /> : <Navigate to="/login" />}
+          />
+          <Route 
+            path="/"
+            element={<Navigate to={user ? "/dashboard" : "/login"} />}
+          />
+        </Routes>
+      </Layout>
     </Router>
   )
 }
