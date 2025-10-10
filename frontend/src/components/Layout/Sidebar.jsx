@@ -9,12 +9,19 @@ const Sidebar = ({ isOpen, userRole }) => {
       { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },
       { path: '/appointments', icon: '📅', label: 'Citas' },
       { path: '/users', icon: '👥', label: 'Usuarios' },
+      { path: '/checkin', icon: '✅', label: 'Check-in/Out' },
       { path: '/companies', icon: '🏢', label: 'Empresas' },
       { path: '/visits', icon: '👤', label: 'Auto-registro' },
       { path: '/accesses', icon: '📅', label: 'Accesos/Eventos' },
       { path: '/blacklist', icon: '🚫', label: 'Lista Negra' },
       { path: '/reports', icon: '📈', label: 'Reportes' },
       { path: '/configuration', icon: '⚙️', label: 'Configuración' }
+    ],
+    security: [
+      { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },
+      { path: '/appointments', icon: '📅', label: 'Citas' },
+      { path: '/checkin', icon: '✅', label: 'Check-in/Out' },
+      { path: '/blacklist', icon: '', label: 'Lista Negra' }
     ],
     reception: [
       { path: '/dashboard', icon: '📊', label: 'Actividad', exact: true },

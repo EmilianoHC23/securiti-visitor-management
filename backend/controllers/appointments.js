@@ -1,4 +1,9 @@
 const Appointment = require('../models/Appointment');
+const { 
+  sendCreationNotification, 
+  sendUpdateNotification, 
+  sendCancellationNotification 
+} = require('../services/emailService');
 
 // @desc    Get all appointments
 // @route   GET /api/appointments
@@ -18,6 +23,7 @@ exports.getAllAppointments = async (req, res, next) => {
 exports.createAppointment = async (req, res, next) => {
   try {
     const appointment = await Appointment.create(req.body);
+    await sendCreationNotification(appointment);
     res.status(201).json({ success: true, data: appointment });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -51,6 +57,7 @@ exports.updateAppointment = async (req, res, next) => {
     if (!appointment) {
       return res.status(404).json({ success: false, error: 'No appointment found' });
     }
+    await sendUpdateNotification(appointment);
     res.status(200).json({ success: true, data: appointment });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -66,6 +73,7 @@ exports.deleteAppointment = async (req, res, next) => {
     if (!appointment) {
       return res.status(404).json({ success: false, error: 'No appointment found' });
     }
+    await sendCancellationNotification(appointment);
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

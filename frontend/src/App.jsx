@@ -1,22 +1,24 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './contexts/AuthContext'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import AppointmentsPage from './pages/AppointmentsPage'
-import NewAppointmentPage from './pages/NewAppointmentPage'
-import AppointmentDetailPage from './pages/AppointmentDetailPage'
-import Layout from './components/Layout/Layout'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import AppointmentsPage from './pages/AppointmentsPage';
+import NewAppointmentPage from './pages/NewAppointmentPage';
+import AppointmentDetailPage from './pages/AppointmentDetailPage';
+import Users from './pages/Users/Users';
+import Checkin from './pages/Checkin/Checkin';
+import Layout from './components/Layout/Layout';
 
 function App() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
       <div className="loading-container">
         <div className="loading-spinner">Cargando sistema...</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -44,13 +46,21 @@ function App() {
             element={user ? <AppointmentDetailPage /> : <Navigate to="/login" />}
           />
           <Route 
+            path="/users"
+            element={user && user.role === 'admin' ? <Users /> : <Navigate to="/dashboard" />}
+          />
+          <Route 
+            path="/checkin"
+            element={user && (user.role === 'admin' || user.role === 'security') ? <Checkin /> : <Navigate to="/dashboard" />}
+          />
+          <Route 
             path="/"
             element={<Navigate to={user ? "/dashboard" : "/login"} />}
           />
         </Routes>
       </Layout>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

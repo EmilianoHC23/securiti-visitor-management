@@ -1,33 +1,19 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const appointmentSchema = new mongoose.Schema({
-  visitorName: {
-    type: String,
-    required: true,
-  },
-  hostName: {
-    type: String,
-    required: true,
-  },
-  company: {
-    type: String,
-  },
-  purpose: {
-    type: String,
-    required: true,
-  },
-  appointmentTime: {
-    type: Date,
-    required: true,
-  },
+  visitorName: { type: String, required: true },
+  visitorEmail: { type: String, required: true },
+  visitorPhone: { type: String },
+  visitorCompany: { type: String },
+  host: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  purpose: { type: String, required: true },
+  scheduledDate: { type: Date, required: true },
   status: {
     type: String,
-    enum: ['scheduled', 'completed', 'cancelled'],
-    default: 'scheduled',
+    enum: ['Pending', 'Approved', 'Rejected', 'Checked-in', 'Checked-out'],
+    default: 'Pending',
   },
-  qrCode: {
-    type: String,
-  },
-});
+  qrCode: { type: String }, // URL or data for the QR code
+}, { timestamps: true });
 
-module.exports = mongoose.model('Appointment', appointmentSchema);
+export default mongoose.model('Appointment', appointmentSchema);
